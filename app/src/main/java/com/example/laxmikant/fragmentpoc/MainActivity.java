@@ -1,7 +1,9 @@
 package com.example.laxmikant.fragmentpoc;
 
-import android.app.Fragment;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,8 @@ public class MainActivity extends AppCompatActivity {
     Context context;
     Button firstFragmentBtn;
     Button secondFragmentBtn;
-    Fragment mainFragment;
+    Fragment fragment = new FirstFragment();
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         initVariable();
         initListeners();
-        startWorking();
+        startWorking(fragment);
     }
 
     private void initVariable() {
@@ -31,8 +34,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListeners() {
+        firstFragmentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment = new FirstFragment();
+                startWorking(fragment);
+            }
+        });
+        secondFragmentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment = new SecondFragment();
+                startWorking(fragment);
+            }
+        });
     }
 
-    private void startWorking() {
+    private void startWorking(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, fragment);
+        fragmentTransaction.commit();
     }
 }
